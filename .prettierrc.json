@@ -1,0 +1,21 @@
+{
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": false,
+    "printWidth": 100,
+    "jsxSingleQuote": false,
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": [
+        "^(next/(.*)$)|^(next$)",
+        "<THIRD_PARTY_MODULES>",
+        "next-seo.config",
+        "^components/(.*)$",
+        "^utils/(.*)$",
+        "^assets/(.*)$",
+        "^@fontsource/(.*)$",
+        "^[./]"
+    ],
+    "jsxBracketSameLine": true
+}
