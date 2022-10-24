@@ -2,8 +2,18 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
 import { MyButton } from "./MyButton"
 import { useCallback, useEffect, useState } from "react"
 import { Header } from "./Header"
+import Storage from "react-native-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const Main = () => {
+
+    const storage = new Storage({
+        size: 1000,
+        storageBackend: AsyncStorage,
+        defaultExpires: 1000 * 3600 * 24,
+        enableCache: true,
+        sync: {},
+    })
 
     // state
     const [count, setCount] = useState<number>(0)
@@ -40,6 +50,45 @@ export const Main = () => {
             setCompleted(false)
         }
     }, [count, targetNumber])
+
+    useEffect(() => {
+        storage.save({
+            key: "myLogin",
+            data: {
+                titleTarget: titleTarget,
+                count: count,
+                targetNumber: targetNumber,
+            },
+            expires: 1000 * 3600,
+        })
+
+        storage
+            .load({
+                key: "myLogin",
+                autoSync: true,
+                syncInBackground: true,
+                syncParams: {
+                    extraFetchOptions: {},
+                    someFlag: true,
+                },
+            })
+            .then(ret => {
+                console.log(ret)
+                setTargetNumber(ret.targetNumber)
+                setCount(ret.count)
+                setTitleTarget(ret.titleTarget)
+            })
+            .catch(err => {
+                console.warn(err.message)
+                switch (err.name) {
+                    case "NotFoundError":
+                        break
+                    case "ExpiredError":
+                        break
+                }
+            })
+
+    })
 
     // styles
     const styles = StyleSheet.create({
@@ -107,7 +156,7 @@ export const Main = () => {
         loading: {
             marginTop: 10,
             borderWidth: 1,
-            borderColor: '#29ab5d',
+            borderColor: "#29ab5d",
             borderStyle: "solid",
             borderRadius: 10,
             width: "100%",
@@ -117,9 +166,8 @@ export const Main = () => {
             backgroundColor: "#29ab5d",
             height: "100%",
             width: `${countPercent()}%`,
-        }
+        },
     })
-
 
     // jsx
     return (
@@ -166,7 +214,7 @@ export const Main = () => {
                 </View>
 
                 <View style={styles.loading}>
-                    <View style={styles.lineLoading}/>
+                    <View style={styles.lineLoading} />
                 </View>
             </View>
         </View>
