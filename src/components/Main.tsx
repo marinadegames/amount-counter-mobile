@@ -1,43 +1,20 @@
 import { StyleSheet, Text, TextInput, View } from "react-native"
 import { MyButton } from "./MyButton"
-import { SetStateAction, useState } from "react"
+import { useCallback, useState } from "react"
 import { Header } from "./Header"
 
 export const Main = () => {
-    const [count, setCount] = useState<number>(0)
-    const [targetTitle, setTargetTitle] = useState<string>()
-    const [maxTarget, setMaxTarget] = useState<number>()
+
     const [complete, setComplete] = useState<boolean>(false)
+    const [count, setCount] = useState<number>(0)
 
-    const changeMaxTarget = (value: SetStateAction<string>) => {
-        if (value) {
-            setMaxTarget(Number(value))
-        } else {
-            setMaxTarget(0)
-        }
-    }
-    const changeTargetTitle = (e: SetStateAction<string>) => {
-        setTargetTitle(e)
-    }
+    const decrement = useCallback(() => {
+        setCount(count - 1)
+    }, [count])
 
-    const increment = () => {
-        if (count >= 0) {
-            setCount(count + 1)
-        }
-
-        if (count >= maxTarget) {
-            setComplete(true)
-        }
-    }
-
-    const decrement = () => {
-        if (count >= 1) {
-            setCount(count - 1)
-        }
-        if (count < maxTarget) {
-            setComplete(false)
-        }
-    }
+    const increment = useCallback(() => {
+        setCount(count + 1)
+    }, [count])
 
     const styles = StyleSheet.create({
         wrapper: {
@@ -45,7 +22,6 @@ export const Main = () => {
             paddingHorizontal: 20,
             width: "100%",
             borderStyle: "solid",
-            borderColor: "red",
             borderWidth: 1,
             flex: 1,
             backgroundColor: "#fff",
@@ -100,56 +76,51 @@ export const Main = () => {
 
     return (
         <View style={styles.wrapper}>
+
             <Header />
 
             <View style={styles.counterWrapper}>
                 <TextInput
                     style={styles.textTarget}
-                    value={targetTitle}
                     selectTextOnFocus={false}
-                    onChangeText={(e) => changeTargetTitle(e)}
+                    onChangeText={() => {
+                    }}
                     placeholder={"Enter your target"}
                 />
                 <View style={styles.counterBox}>
-                    <MyButton title={"+"} color={"black"} callback={increment} />
+                    <MyButton title={"-"} callback={decrement} />
                     <Text style={styles.number}>{count} BYN</Text>
-                    <MyButton title={"-"} color={"black"} callback={decrement} />
+                    <MyButton title={"+"} callback={increment} />
                 </View>
 
-                <View style={styles.targetInputMoney}>
-                    <Text style={styles.textTargetMoney}>TARGET:</Text>
-                    <TextInput
-                        keyboardType="numeric"
-                        style={styles.textTargetMoneyInput}
-                        selectTextOnFocus={false}
-                        maxLength={10000}
-                        value={maxTarget ? String(maxTarget) : ""}
-                        onChangeText={(e) => changeMaxTarget(e)}
-                        placeholder={"Money target"}
-                    />
-                </View>
+                {/*<View style={styles.targetInputMoney}>*/}
+                {/*    <Text style={styles.textTargetMoney}>TARGET:</Text>*/}
+                {/*    <TextInput*/}
+                {/*        keyboardType="numeric"*/}
+                {/*        style={styles.textTargetMoneyInput}*/}
+                {/*        selectTextOnFocus={false}*/}
+                {/*        maxLength={10000}*/}
+                {/*        value={maxTarget ? String(maxTarget) : ""}*/}
+                {/*        onChangeText={(e) => changeMaxTarget(e)}*/}
+                {/*        placeholder={"Money target"}*/}
+                {/*    />*/}
+                {/*</View>*/}
 
-                <View style={styles.leftWrapper}>
-                    <Text style={styles.textTargetMoney}>LEFT:</Text>
-                    {complete ? (
-                        <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>
-                    ) : (
-                        <Text style={styles.textTargetMoneyInput}>
-                            {maxTarget - count && String(maxTarget - count)}
-                        </Text>
-                    )}
-                </View>
+                {/*<View style={styles.leftWrapper}>*/}
+                {/*    <Text style={styles.textTargetMoney}>LEFT:</Text>*/}
+                {/*    {complete*/}
+                {/*        ? <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>*/}
+                {/*        : <Text style={styles.textTargetMoneyInput}>{maxTarget - count && String(maxTarget - count)}</Text>*/}
+                {/*    }*/}
+                {/*</View>*/}
 
-                <View style={styles.leftWrapper}>
-                    <Text style={styles.textTargetMoney}>LEFT, %:</Text>
-                    {complete ? (
-                        <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>
-                    ) : (
-                        <Text style={styles.textTargetMoneyInput}>
-                            {maxTarget - count && String(maxTarget - count)}
-                        </Text>
-                    )}
-                </View>
+                {/*<View style={styles.leftWrapper}>*/}
+                {/*    <Text style={styles.textTargetMoney}>LEFT, %:</Text>*/}
+                {/*    {complete*/}
+                {/*        ? <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>*/}
+                {/*        : <Text style={styles.textTargetMoneyInput}>{maxTarget - count && String(maxTarget - count)}</Text>*/}
+                {/*    }*/}
+                {/*</View>*/}
             </View>
         </View>
     )

@@ -7,6 +7,8 @@
     "jsxSingleQuote": false,
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
+    "bracketSpacing": true,
+    "bracketSameLine": true,
     "importOrder": [
         "^(next/(.*)$)|^(next$)",
         "<THIRD_PARTY_MODULES>",
@@ -16,6 +18,5 @@
         "^assets/(.*)$",
         "^@fontsource/(.*)$",
         "^[./]"
-    ],
-    "jsxBracketSameLine": true
+    ]
 }

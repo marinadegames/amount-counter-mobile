@@ -10,12 +10,13 @@ export const Header = () => {
 
 const styles = StyleSheet.create({
     wrapper: {
+        marginTop: 10,
         marginBottom: 40,
     },
     text: {
         textAlign: "left",
         textTransform: "uppercase",
         fontWeight: "bold",
-        fontSize: 30,
+        fontSize: 25,
     },
 })
