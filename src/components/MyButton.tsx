@@ -6,9 +6,10 @@ type PropsType = {
     color?: string
     style?: string
     callback?: () => void
+    completed?: boolean
 }
 
-export const MyButton = React.memo(({ title, color, callback }: PropsType) => {
+export const MyButton = React.memo(({ title, callback, completed }: PropsType) => {
 
     const [press, setPress] = useState<boolean>(false)
 
@@ -31,7 +32,7 @@ export const MyButton = React.memo(({ title, color, callback }: PropsType) => {
             height: 60,
             borderRadius: 10,
             borderWidth: 2,
-            borderColor: color ? color : "black",
+            borderColor: completed ? "white" : "black",
         },
         buttonPressed: {
             display: "flex",
@@ -42,13 +43,13 @@ export const MyButton = React.memo(({ title, color, callback }: PropsType) => {
             width: 60,
             height: 60,
             borderWidth: 2,
-            borderColor: color ? color : "black",
-            backgroundColor: color ? color : "black",
+            borderColor: completed ? "white" : "black",
+            backgroundColor: "black",
         },
         title: {
             fontSize: 30,
             fontWeight: "bold",
-            color: color ? color : "black",
+            color: completed ? "white" : "black",
         },
         titlePressed: {
             fontSize: 30,
@@ -59,6 +60,7 @@ export const MyButton = React.memo(({ title, color, callback }: PropsType) => {
 
     return (
         <Pressable style={press ? styles.buttonPressed : styles.button}
+                   disabled={completed}
                    onTouchStart={onPress}
                    onTouchEnd={offPress}>
             <Text style={press ? styles.titlePressed : styles.title}>{title}</Text>
