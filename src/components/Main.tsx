@@ -6,7 +6,6 @@ import Storage from "react-native-storage"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const Main = () => {
-
     const storage = new Storage({
         size: 1000,
         storageBackend: AsyncStorage,
@@ -35,12 +34,15 @@ export const Main = () => {
         }
     }, [count])
 
-    const changeTitleTarget = useCallback((value: string) => {
-        setTitleTarget(value)
-    }, [titleTarget])
+    const changeTitleTarget = useCallback(
+        (value: string) => {
+            setTitleTarget(value)
+        },
+        [titleTarget]
+    )
 
     const countPercent = () => {
-        return Math.round((count * 100) / targetNumber * 100) / 100
+        return Math.round(((count * 100) / targetNumber) * 100) / 100
     }
 
     useEffect(() => {
@@ -72,13 +74,13 @@ export const Main = () => {
                     someFlag: true,
                 },
             })
-            .then(ret => {
+            .then((ret) => {
                 console.log(ret)
                 setTargetNumber(ret.targetNumber)
                 setCount(ret.count)
                 setTitleTarget(ret.titleTarget)
             })
-            .catch(err => {
+            .catch((err) => {
                 console.warn(err.message)
                 switch (err.name) {
                     case "NotFoundError":
@@ -87,7 +89,6 @@ export const Main = () => {
                         break
                 }
             })
-
     })
 
     // styles
@@ -172,7 +173,6 @@ export const Main = () => {
     // jsx
     return (
         <View style={styles.wrapper}>
-
             <Header />
 
             <View style={styles.counterWrapper}>
@@ -192,20 +192,23 @@ export const Main = () => {
 
                 <View style={styles.targetInputMoney}>
                     <Text style={styles.textTargetMoney}>TARGET:</Text>
-                    <TextInput style={styles.textTargetMoneyInput}
-                               textContentType={"creditCardNumber"}
-                               editable={true}
-                               keyboardType={"number-pad"}
-                               value={String(targetNumber)}
-                               onChangeText={e => setTargetNumber(Number(e))} />
+                    <TextInput
+                        style={styles.textTargetMoneyInput}
+                        textContentType={"creditCardNumber"}
+                        editable={true}
+                        keyboardType={"number-pad"}
+                        value={String(targetNumber)}
+                        onChangeText={(e) => setTargetNumber(Number(e))}
+                    />
                 </View>
 
                 <View style={styles.leftWrapper}>
                     <Text style={styles.textTargetMoney}>LEFT:</Text>
-                    {completed
-                        ? <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>
-                        : <Text style={styles.textTargetMoneyInput}>{targetNumber - count}</Text>
-                    }
+                    {completed ? (
+                        <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>
+                    ) : (
+                        <Text style={styles.textTargetMoneyInput}>{targetNumber - count}</Text>
+                    )}
                 </View>
 
                 <View style={styles.leftWrapper}>

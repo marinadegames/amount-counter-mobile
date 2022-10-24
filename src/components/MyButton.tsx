@@ -10,7 +10,6 @@ type PropsType = {
 }
 
 export const MyButton = React.memo(({ title, callback, completed }: PropsType) => {
-
     const [press, setPress] = useState<boolean>(false)
 
     const onPress = () => {
@@ -59,10 +58,11 @@ export const MyButton = React.memo(({ title, callback, completed }: PropsType) =
     })
 
     return (
-        <Pressable style={press ? styles.buttonPressed : styles.button}
-                   disabled={completed}
-                   onTouchStart={onPress}
-                   onTouchEnd={offPress}>
+        <Pressable
+            style={press ? styles.buttonPressed : styles.button}
+            disabled={completed}
+            onTouchStart={onPress}
+            onTouchEnd={offPress}>
             <Text style={press ? styles.titlePressed : styles.title}>{title}</Text>
         </Pressable>
     )
