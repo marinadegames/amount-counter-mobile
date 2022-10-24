@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from "react-native";
+import { StyleSheet, Text, View } from "react-native"
 
 export const Header = () => {
     return (
@@ -8,15 +8,14 @@ export const Header = () => {
     )
 }
 
-
 const styles = StyleSheet.create({
     wrapper: {
         marginBottom: 40,
     },
     text: {
-        textAlign: 'left',
+        textAlign: "left",
         textTransform: "uppercase",
         fontWeight: "bold",
-        fontSize: 30
-    }
+        fontSize: 30,
+    },
 })
