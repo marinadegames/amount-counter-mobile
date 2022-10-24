@@ -1,5 +1,5 @@
-import { StyleSheet, Text, Vibration, View } from "react-native"
-import { useState } from "react"
+import { Pressable, StyleSheet, Text } from "react-native"
+import React, { useState } from "react"
 
 type PropsType = {
     title: string
@@ -8,12 +8,12 @@ type PropsType = {
     callback?: () => void
 }
 
-export const MyButton = ({ title, color, callback }: PropsType) => {
+export const MyButton = React.memo(({ title, color, callback }: PropsType) => {
+
     const [press, setPress] = useState<boolean>(false)
 
     const onPress = () => {
-        callback()
-        Vibration.vibrate(50, false)
+        callback && callback()
         setPress(true)
     }
 
@@ -30,7 +30,7 @@ export const MyButton = ({ title, color, callback }: PropsType) => {
             width: 60,
             height: 60,
             borderRadius: 10,
-            borderWidth: 4,
+            borderWidth: 2,
             borderColor: color ? color : "black",
         },
         buttonPressed: {
@@ -58,12 +58,10 @@ export const MyButton = ({ title, color, callback }: PropsType) => {
     })
 
     return (
-        <View
-            style={press ? styles.buttonPressed : styles.button}
-            onTouchStart={onPress}
-            onTouchEnd={offPress}
-        >
+        <Pressable style={press ? styles.buttonPressed : styles.button}
+                   onTouchStart={onPress}
+                   onTouchEnd={offPress}>
             <Text style={press ? styles.titlePressed : styles.title}>{title}</Text>
-        </View>
+        </Pressable>
     )
-}
+})
