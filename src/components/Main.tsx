@@ -29,6 +29,10 @@ export const Main = () => {
         setTitleTarget(value)
     }, [titleTarget])
 
+    const countPercent = () => {
+        return Math.round((count * 100) / targetNumber * 100) / 100
+    }
+
     useEffect(() => {
         if (targetNumber - count <= 0) {
             setCompleted(true)
@@ -100,7 +104,22 @@ export const Main = () => {
             flexDirection: "row",
             marginTop: 10,
         },
+        loading: {
+            marginTop: 10,
+            borderWidth: 1,
+            borderColor: '#29ab5d',
+            borderStyle: "solid",
+            borderRadius: 10,
+            width: "100%",
+            height: 10,
+        },
+        lineLoading: {
+            backgroundColor: "#29ab5d",
+            height: "100%",
+            width: `${countPercent()}%`,
+        }
     })
+
 
     // jsx
     return (
@@ -141,13 +160,14 @@ export const Main = () => {
                     }
                 </View>
 
-                {/*<View style={styles.leftWrapper}>*/}
-                {/*    <Text style={styles.textTargetMoney}>LEFT, %:</Text>*/}
-                {/*    {complete*/}
-                {/*        ? <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>*/}
-                {/*        : <Text style={styles.textTargetMoneyInput}>{maxTarget - count && String(maxTarget - count)}</Text>*/}
-                {/*    }*/}
-                {/*</View>*/}
+                <View style={styles.leftWrapper}>
+                    <Text style={styles.textTargetMoney}>LEFT, %:</Text>
+                    <Text style={styles.textTargetMoneyInput}>{countPercent()}</Text>
+                </View>
+
+                <View style={styles.loading}>
+                    <View style={styles.lineLoading}/>
+                </View>
             </View>
         </View>
     )
