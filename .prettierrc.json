@@ -5,18 +5,10 @@
     "singleQuote": false,
     "printWidth": 100,
     "jsxSingleQuote": false,
-    "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true,
+    "jsxBracketSameLine": false,
     "bracketSpacing": true,
     "bracketSameLine": true,
-    "importOrder": [
-        "^(next/(.*)$)|^(next$)",
-        "<THIRD_PARTY_MODULES>",
-        "next-seo.config",
-        "^components/(.*)$",
-        "^utils/(.*)$",
-        "^assets/(.*)$",
-        "^@fontsource/(.*)$",
-        "^[./]"
-    ]
+    "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
 }
