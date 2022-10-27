@@ -1,5 +1,5 @@
+import React, { memo, useState } from "react"
 import { Pressable, StyleSheet, Text } from "react-native"
-import React, { useState } from "react"
 
 type PropsType = {
     title: string
@@ -9,7 +9,7 @@ type PropsType = {
     completed?: boolean
 }
 
-export const MyButton = React.memo(({ title, callback, completed }: PropsType) => {
+export const MyButton = memo(({ title, callback, completed }: PropsType) => {
     const [press, setPress] = useState<boolean>(false)
 
     const onPress = () => {
@@ -67,3 +67,5 @@ export const MyButton = React.memo(({ title, callback, completed }: PropsType) =
         </Pressable>
     )
 })
+
+MyButton.displayName = "MyButton"

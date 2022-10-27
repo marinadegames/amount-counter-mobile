@@ -14,8 +14,9 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint"],
+    "plugins": ["react", "@typescript-eslint", "import"],
     "rules": {
+        "react/react-in-jsx-scope": "off",
         "no-console": "warn",
         "quotes": ["error", "double"],
         "jsx-quotes": ["error", "prefer-double"],
@@ -26,15 +27,7 @@
                 "code": 100
             }
         ],
-        "comma-dangle": ["error", "always-multiline"],
         "semi": ["warn", "never"],
-        "no-duplicate-imports": "error",
-        "sort-imports": "warn",
-        "import/order": [
-            "error",
-            {
-                "groups": ["internal"]
-            }
-        ]
+        "no-duplicate-imports": "error"
     }
 }
