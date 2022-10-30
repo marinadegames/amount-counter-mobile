@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { v1 } from "uuid"
 
 import type {
@@ -8,17 +9,38 @@ import type {
     CountersSliceType,
     IncrementActionType,
 } from "./allTypes"
+import { useAppDispatch } from "./store"
 
+// thunks
+export const getStoreThunk = createAsyncThunk("counters", async () => {
+    try {
+        const result = await AsyncStorage.getItem("@COUNTERS")
+        return JSON.parse(result)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const updateStoreThunk = createAsyncThunk("counters", async () => {
+    try {
+        await AsyncStorage.setItem("@COUNTERS", JSON.stringify(initialState))
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+// state
 const initialState: CountersSliceType = [
     {
         id: v1(),
-        count: 0,
+        count: 8,
         targetNumber: 10,
         titleTarget: "ten",
         completed: false,
     },
 ]
 
+// reducers
 export const countersSlice = createSlice({
     name: "Counters",
     initialState,
@@ -53,6 +75,11 @@ export const countersSlice = createSlice({
                 completed: false,
             })
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(getStoreThunk.fulfilled, (state, action: any) => {
+            return action.payload
+        })
     },
 })
 

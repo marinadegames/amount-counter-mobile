@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native"
 
-import { addNewCounter } from "../bll/countersSlice"
+import { addNewCounter, getStoreThunk } from "../bll/countersSlice"
 import { useAppDispatch } from "../bll/store"
 import { MyButton } from "./MyButton"
 
@@ -9,6 +9,10 @@ export const Header = () => {
 
     const addCounterHandler = () => {
         dispatch(addNewCounter())
+    }
+
+    const getStoreHandler = () => {
+        dispatch(getStoreThunk())
     }
 
     return (
@@ -21,6 +25,7 @@ export const Header = () => {
                 fontSizeProps={23}
                 callback={addCounterHandler}
             />
+            <MyButton title={"getStore"} callback={getStoreHandler} />
         </View>
     )
 }

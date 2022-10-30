@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react"
+import { memo, useCallback, useEffect } from "react"
 import { StyleSheet, Text, TextInput, View } from "react-native"
 
 import {
@@ -7,6 +7,7 @@ import {
     changeTargetTitle,
     decrement,
     increment,
+    updateStoreThunk,
 } from "../bll/countersSlice"
 import { useAppDispatch } from "../bll/store"
 import { MyButton } from "./MyButton"
@@ -33,6 +34,7 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
         if (count > 0) {
             dispatch(decrement({ id }))
             dispatch(changeComplete({ id, completed: false }))
+            dispatch(updateStoreThunk())
         }
     }
 
@@ -58,6 +60,10 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
         }
         dispatch(changeTargetNumber({ id, value: e }))
     }
+
+    useEffect(() => {
+        dispatch(updateStoreThunk())
+    }, [])
 
     // styles
     const styles = StyleSheet.create({
