@@ -19,6 +19,11 @@ export type ChangeCompleteType = {
     completed: boolean
 }
 
+export type ChangeTargetTitleType = {
+    id: number
+    value: string
+}
+
 const initialState: CountersSliceType = [
     {
         id: 1,
@@ -32,6 +37,13 @@ const initialState: CountersSliceType = [
         count: 0,
         targetNumber: 1000,
         titleTarget: "iPhone",
+        completed: false,
+    },
+    {
+        id: 3,
+        count: 0,
+        targetNumber: 3000,
+        titleTarget: "Mac",
         completed: false,
     },
 ]
@@ -51,8 +63,13 @@ export const countersSlice = createSlice({
                 c.id === action.payload.id ? { ...c, completed: action.payload.completed } : c
             )
         },
+        changeTargetTitle: (state, action: PayloadAction<ChangeTargetTitleType>) => {
+            return state.map((c) =>
+                c.id === action.payload.id ? { ...c, titleTarget: action.payload.value } : c
+            )
+        },
     },
 })
 
-export const { increment, decrement, changeComplete } = countersSlice.actions
+export const { increment, decrement, changeComplete, changeTargetTitle } = countersSlice.actions
 export default countersSlice.reducer

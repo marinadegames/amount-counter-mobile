@@ -16,6 +16,7 @@
     },
     "plugins": ["react", "@typescript-eslint", "import"],
     "rules": {
+        "react/display-name": "off",
         "react/react-in-jsx-scope": "off",
         "no-console": "warn",
         "quotes": ["error", "double"],

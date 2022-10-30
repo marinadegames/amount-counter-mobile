@@ -11,7 +11,6 @@ export const Header = () => {
 const styles = StyleSheet.create({
     wrapper: {
         marginTop: 10,
-        marginBottom: 40,
     },
     text: {
         textAlign: "left",
