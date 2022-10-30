@@ -24,6 +24,11 @@ export type ChangeTargetTitleType = {
     value: string
 }
 
+export type ChangeTargetNumberType = {
+    id: number
+    value: number
+}
+
 const initialState: CountersSliceType = [
     {
         id: 1,
@@ -68,8 +73,14 @@ export const countersSlice = createSlice({
                 c.id === action.payload.id ? { ...c, titleTarget: action.payload.value } : c
             )
         },
+        changeTargetNumber: (state, action: PayloadAction<ChangeTargetNumberType>) => {
+            return state.map((c) =>
+                c.id === action.payload.id ? { ...c, targetNumber: action.payload.value } : c
+            )
+        },
     },
 })
 
-export const { increment, decrement, changeComplete, changeTargetTitle } = countersSlice.actions
+export const { increment, decrement, changeComplete, changeTargetTitle, changeTargetNumber } =
+    countersSlice.actions
 export default countersSlice.reducer

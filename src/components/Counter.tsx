@@ -1,7 +1,13 @@
 import { memo, useCallback } from "react"
 import { StyleSheet, Text, TextInput, View } from "react-native"
 
-import { changeComplete, changeTargetTitle, decrement, increment } from "../bll/countersSlice"
+import {
+    changeComplete,
+    changeTargetNumber,
+    changeTargetTitle,
+    decrement,
+    increment,
+} from "../bll/countersSlice"
 import { useAppDispatch } from "../bll/store"
 import { MyButton } from "./MyButton"
 
@@ -17,7 +23,10 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
     const dispatch = useAppDispatch()
 
     const countPercent = () => {
-        return Math.round(((count * 100) / targetNumber) * 100) / 100
+        const result = Math.round(((count * 100) / targetNumber) * 100) / 100
+        if (isNaN(result)) {
+            return 0
+        } else return result
     }
 
     const decrementHandler = () => {
@@ -42,6 +51,13 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
         },
         [id]
     )
+
+    const changeTargetNumberHandler = (e: number) => {
+        if (e <= 0) {
+            dispatch(changeTargetNumber({ id, value: 0 }))
+        }
+        dispatch(changeTargetNumber({ id, value: e }))
+    }
 
     // styles
     const styles = StyleSheet.create({
@@ -133,7 +149,8 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
                 <TextInput
                     style={styles.textTargetMoneyInput}
                     textContentType={"creditCardNumber"}
-                    editable={true}
+                    onChangeText={(e) => changeTargetNumberHandler(Number(e))}
+                    keyboardType={"number-pad"}
                     value={String(targetNumber)}
                 />
             </View>
@@ -143,13 +160,10 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
                 {completed ? (
                     <Text style={styles.textTargetMoneyInput}>COMPLETED!</Text>
                 ) : (
-                    <Text style={styles.textTargetMoneyInput}>{targetNumber - count}</Text>
+                    <Text style={styles.textTargetMoneyInput}>
+                        {targetNumber - count} ({countPercent()}%)
+                    </Text>
                 )}
-            </View>
-
-            <View style={styles.leftWrapper}>
-                <Text style={styles.textTargetMoney}>LEFT, %:</Text>
-                <Text style={styles.textTargetMoneyInput}>{countPercent()}</Text>
             </View>
 
             <View style={styles.loading}>
