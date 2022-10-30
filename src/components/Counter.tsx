@@ -53,7 +53,6 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
     )
 
     const changeTargetNumberHandler = (e: number) => {
-        console.log("call")
         if (e <= 0) {
             dispatch(changeTargetNumber({ id, value: 0 }))
         }
