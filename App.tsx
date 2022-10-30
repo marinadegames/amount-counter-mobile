@@ -4,7 +4,6 @@ import { Provider } from "react-redux"
 import { store } from "./src/bll/store"
 import { Main } from "./src/components/Main"
 
-
 export default function App() {
     return (
         <Provider store={store}>
