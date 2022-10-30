@@ -1,6 +1,7 @@
-import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native"
+import { memo, useCallback } from "react"
+import { StyleSheet, Text, TextInput, View } from "react-native"
 
-import { changeComplete, decrement, increment } from "../bll/countersSlice"
+import { changeComplete, changeTargetTitle, decrement, increment } from "../bll/countersSlice"
 import { useAppDispatch } from "../bll/store"
 import { MyButton } from "./MyButton"
 
@@ -12,7 +13,7 @@ type PropsType = {
     titleTarget: string
 }
 
-export const Counter = ({ id, count, completed, targetNumber, titleTarget }: PropsType) => {
+export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }: PropsType) => {
     const dispatch = useAppDispatch()
 
     const countPercent = () => {
@@ -35,6 +36,13 @@ export const Counter = ({ id, count, completed, targetNumber, titleTarget }: Pro
         }
     }
 
+    const editTargetTitleHandler = useCallback(
+        (e: string) => {
+            dispatch(changeTargetTitle({ id, value: e }))
+        },
+        [id]
+    )
+
     // styles
     const styles = StyleSheet.create({
         counterWrapper: {
@@ -51,7 +59,6 @@ export const Counter = ({ id, count, completed, targetNumber, titleTarget }: Pro
             color: completed ? "white" : "black",
             fontSize: 22,
             fontWeight: "bold",
-            textTransform: "uppercase",
         },
         counterBox: {
             marginTop: 10,
@@ -110,11 +117,9 @@ export const Counter = ({ id, count, completed, targetNumber, titleTarget }: Pro
     return (
         <View style={styles.counterWrapper}>
             <TextInput
-                editable={true}
-                onBlur={() => Keyboard.dismiss()}
+                value={titleTarget}
                 style={styles.textTarget}
-                onChangeText={null}
-                defaultValue={titleTarget}
+                onChangeText={editTargetTitleHandler}
                 placeholder={"Enter your target"}
             />
             <View style={styles.counterBox}>
@@ -129,9 +134,7 @@ export const Counter = ({ id, count, completed, targetNumber, titleTarget }: Pro
                     style={styles.textTargetMoneyInput}
                     textContentType={"creditCardNumber"}
                     editable={true}
-                    keyboardType={"number-pad"}
                     value={String(targetNumber)}
-                    onChangeText={null}
                 />
             </View>
 
@@ -154,4 +157,4 @@ export const Counter = ({ id, count, completed, targetNumber, titleTarget }: Pro
             </View>
         </View>
     )
-}
+})
