@@ -1,54 +1,20 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { v1 } from "uuid"
 
-export type CountersSliceType = Array<CounterType>
-
-export type CounterType = {
-    id: number
-    titleTarget: string
-    count: number
-    targetNumber: number
-    completed: boolean
-}
-
-export type IncrementActionType = {
-    id: number
-}
-
-export type ChangeCompleteType = {
-    id: number
-    completed: boolean
-}
-
-export type ChangeTargetTitleType = {
-    id: number
-    value: string
-}
-
-export type ChangeTargetNumberType = {
-    id: number
-    value: number
-}
+import type {
+    ChangeCompleteType,
+    ChangeTargetNumberType,
+    ChangeTargetTitleType,
+    CountersSliceType,
+    IncrementActionType,
+} from "./allTypes"
 
 const initialState: CountersSliceType = [
     {
-        id: 1,
+        id: v1(),
         count: 0,
         targetNumber: 10,
         titleTarget: "ten",
-        completed: false,
-    },
-    {
-        id: 2,
-        count: 0,
-        targetNumber: 1000,
-        titleTarget: "iPhone",
-        completed: false,
-    },
-    {
-        id: 3,
-        count: 0,
-        targetNumber: 3000,
-        titleTarget: "Mac",
         completed: false,
     },
 ]
@@ -78,9 +44,24 @@ export const countersSlice = createSlice({
                 c.id === action.payload.id ? { ...c, targetNumber: action.payload.value } : c
             )
         },
+        addNewCounter: (state) => {
+            state.unshift({
+                id: v1(),
+                titleTarget: null,
+                targetNumber: 10,
+                count: 0,
+                completed: false,
+            })
+        },
     },
 })
 
-export const { increment, decrement, changeComplete, changeTargetTitle, changeTargetNumber } =
-    countersSlice.actions
+export const {
+    increment,
+    decrement,
+    changeComplete,
+    changeTargetTitle,
+    changeTargetNumber,
+    addNewCounter,
+} = countersSlice.actions
 export default countersSlice.reducer

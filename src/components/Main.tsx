@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native"
 
-import { CountersSliceType } from "../bll/countersSlice"
+import type { CountersSliceType } from "../bll/allTypes"
 import { useAppSelector } from "../bll/store"
 import { Counter } from "./Counter"
 import { Header } from "./Header"
