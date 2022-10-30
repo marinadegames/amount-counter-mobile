@@ -12,7 +12,7 @@ import { useAppDispatch } from "../bll/store"
 import { MyButton } from "./MyButton"
 
 type PropsType = {
-    id: number
+    id: string
     count: number
     targetNumber: number
     completed: boolean
