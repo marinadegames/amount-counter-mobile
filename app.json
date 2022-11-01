@@ -2,7 +2,7 @@
     "expo": {
         "name": "amountcounter",
         "slug": "amountcounter",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "sdkVersion": "46.0.0",
         "platforms": ["ios", "android", "web"],
         "android": {
