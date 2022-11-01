@@ -12,7 +12,6 @@ export const Main = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log("render")
         dispatch(fetchCountersThunk())
     }, [])
 
@@ -21,18 +20,17 @@ export const Main = () => {
         <View style={styles.wrapper}>
             <Header />
             <ScrollView style={styles.scrollWrapper} showsVerticalScrollIndicator={false}>
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                    {counters.map((counter) => (
+                {counters.map((counter) => (
+                    <KeyboardAvoidingView key={counter.id} behavior={Platform.OS === "ios" ? "padding" : "height"}>
                         <Counter
                             id={counter.id}
-                            key={counter.id}
                             titleTarget={counter.titleTarget}
                             count={counter.count}
                             targetNumber={counter.targetNumber}
                             completed={counter.completed}
                         />
-                    ))}
-                </KeyboardAvoidingView>
+                    </KeyboardAvoidingView>
+                ))}
             </ScrollView>
         </View>
     )
