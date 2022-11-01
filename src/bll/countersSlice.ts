@@ -9,36 +9,18 @@ import type {
     CountersSliceType,
     IncrementActionType,
 } from "./allTypes"
-import { useAppDispatch } from "./store"
 
 // thunks
-export const getStoreThunk = createAsyncThunk("counters", async () => {
-    try {
-        const result = await AsyncStorage.getItem("@COUNTERS")
-        return JSON.parse(result)
-    } catch (error) {
-        console.log(error)
-    }
+export const fetchCountersThunk = createAsyncThunk("GET", async () => {
+    return await AsyncStorage.getItem("@COUNTERS")
 })
 
-export const updateStoreThunk = createAsyncThunk("counters", async () => {
-    try {
-        await AsyncStorage.setItem("@COUNTERS", JSON.stringify(initialState))
-    } catch (e) {
-        console.log(e)
-    }
+export const incrementThunk = createAsyncThunk("INCREMENT", async (id: string) => {
+    return id
 })
 
 // state
-const initialState: CountersSliceType = [
-    {
-        id: v1(),
-        count: 8,
-        targetNumber: 10,
-        titleTarget: "ten",
-        completed: false,
-    },
-]
+const initialState: CountersSliceType = []
 
 // reducers
 export const countersSlice = createSlice({
@@ -53,17 +35,32 @@ export const countersSlice = createSlice({
         },
         changeComplete: (state, action: PayloadAction<ChangeCompleteType>) => {
             return state.map((c) =>
-                c.id === action.payload.id ? { ...c, completed: action.payload.completed } : c
+                c.id === action.payload.id
+                    ? {
+                          ...c,
+                          completed: action.payload.completed,
+                      }
+                    : c
             )
         },
         changeTargetTitle: (state, action: PayloadAction<ChangeTargetTitleType>) => {
             return state.map((c) =>
-                c.id === action.payload.id ? { ...c, titleTarget: action.payload.value } : c
+                c.id === action.payload.id
+                    ? {
+                          ...c,
+                          titleTarget: action.payload.value,
+                      }
+                    : c
             )
         },
         changeTargetNumber: (state, action: PayloadAction<ChangeTargetNumberType>) => {
             return state.map((c) =>
-                c.id === action.payload.id ? { ...c, targetNumber: action.payload.value } : c
+                c.id === action.payload.id
+                    ? {
+                          ...c,
+                          targetNumber: action.payload.value,
+                      }
+                    : c
             )
         },
         addNewCounter: (state) => {
@@ -75,15 +72,35 @@ export const countersSlice = createSlice({
                 completed: false,
             })
         },
+        updateStore: (state: CountersSliceType, action: PayloadAction<CountersSliceType>) => {
+            return [...state, ...action.payload]
+        },
     },
     extraReducers: (builder) => {
-        builder.addCase(getStoreThunk.fulfilled, (state, action: any) => {
-            return action.payload
-        })
+        builder
+            // GET
+            .addCase(fetchCountersThunk.pending, (state, action) => {
+                console.log(action.payload)
+            })
+            .addCase(fetchCountersThunk.fulfilled, (state, action) => {
+                console.log(JSON.parse(action.payload))
+                return JSON.parse(action.payload)
+            })
+            .addCase(fetchCountersThunk.rejected, () => {
+                console.error("ERROR: GET")
+            })
+
+            // INCREMENT
+            .addCase(incrementThunk.fulfilled, (state, action) => {
+                const result = state.map((c) => (c.id === action.payload ? { ...c, count: c.count + 1 } : c))
+                AsyncStorage.setItem("@COUNTERS", JSON.stringify(result))
+                return result
+            })
     },
 })
 
 export const {
+    updateStore,
     increment,
     decrement,
     changeComplete,
