@@ -2,11 +2,12 @@ import { memo, useCallback } from "react"
 import { StyleSheet, Text, TextInput, View } from "react-native"
 
 import {
-    changeComplete,
-    changeTargetNumber,
-    changeTargetTitle,
-    decrement,
-    increment,
+    changeCompleteThunk,
+    changeTargetNumberThunk,
+    changeTargetTitleThunk,
+    decrementThunk,
+    deleteCounterThunk,
+    incrementThunk,
 } from "../bll/countersSlice"
 import { useAppDispatch } from "../bll/store"
 import { MyButton } from "./MyButton"
@@ -31,32 +32,48 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
 
     const decrementHandler = () => {
         if (count > 0) {
-            dispatch(decrement({ id }))
-            dispatch(changeComplete({ id, completed: false }))
+            dispatch(decrementThunk(id))
+            const payload = {
+                id: id,
+                value: false,
+            }
+            dispatch(changeCompleteThunk(payload))
         }
     }
 
     const incrementHandler = () => {
         if (count < targetNumber) {
-            dispatch(increment({ id }))
+            dispatch(incrementThunk(id))
             if (count === targetNumber - 1) {
-                dispatch(changeComplete({ id, completed: true }))
+                const payload = {
+                    id: id,
+                    value: true,
+                }
+                dispatch(changeCompleteThunk(payload))
             }
         }
     }
 
     const editTargetTitleHandler = useCallback(
         (e: string) => {
-            dispatch(changeTargetTitle({ id, value: e }))
+            const payload = {
+                id: id,
+                value: e,
+            }
+            dispatch(changeTargetTitleThunk(payload))
         },
         [id]
     )
 
     const changeTargetNumberHandler = (e: number) => {
         if (e <= 0) {
-            dispatch(changeTargetNumber({ id, value: 0 }))
+            dispatch(changeTargetNumberThunk({ id, value: 0 }))
         }
-        dispatch(changeTargetNumber({ id, value: e }))
+        dispatch(changeTargetNumberThunk({ id, value: e }))
+    }
+
+    const deleteCounterHandler = () => {
+        dispatch(deleteCounterThunk(id))
     }
 
     // styles
@@ -70,6 +87,11 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
             borderRadius: 10,
             minWidth: "100%",
             backgroundColor: completed ? "#29ab5d" : "white",
+        },
+        headerWrapper: {
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
         },
         textTarget: {
             color: completed ? "white" : "black",
@@ -132,12 +154,24 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
     // jsx
     return (
         <View style={styles.counterWrapper}>
-            <TextInput
-                value={titleTarget}
-                style={styles.textTarget}
-                onChangeText={editTargetTitleHandler}
-                placeholder={"Enter your target"}
-            />
+            <View style={styles.headerWrapper}>
+                <TextInput
+                    value={titleTarget}
+                    enablesReturnKeyAutomatically={true}
+                    style={styles.textTarget}
+                    onChangeText={editTargetTitleHandler}
+                    placeholder={"Enter your target"}
+                />
+                <MyButton
+                    callback={deleteCounterHandler}
+                    title={"X"}
+                    widthProps={40}
+                    heightProps={40}
+                    fontSizeProps={20}
+                    borderEnabled={false}
+                />
+            </View>
+
             <View style={styles.counterBox}>
                 <MyButton title={"-"} callback={decrementHandler} completed={completed} />
                 <Text style={styles.number}>{count} BYN</Text>
@@ -147,6 +181,7 @@ export const Counter = memo(({ id, count, completed, targetNumber, titleTarget }
             <View style={styles.targetInputMoney}>
                 <Text style={styles.textTargetMoney}>TARGET:</Text>
                 <TextInput
+                    enablesReturnKeyAutomatically={true}
                     style={styles.textTargetMoneyInput}
                     textContentType={"creditCardNumber"}
                     onChangeText={(e) => changeTargetNumberHandler(Number(e))}
